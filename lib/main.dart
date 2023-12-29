@@ -1,8 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:workapp/pages/bottomnav.dart';
 import 'package:workapp/pages/home.dart';
+import 'package:workapp/pages/login.dart';
+import 'package:workapp/pages/onboard.dart';
+import 'package:workapp/pages/order.dart';
+import 'package:workapp/pages/signup.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -33,7 +40,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BottomNav()
+      home: Onboard()
     );
   }
 }

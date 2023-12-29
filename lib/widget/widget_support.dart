@@ -9,4 +9,12 @@ class AppWidget{
           fontWeight: FontWeight.bold);
 
   }
+
+  static TextStyle SemiboldTextFieldstyle(){
+    return TextStyle(
+        color: Colors.black,
+        fontSize: 18.0 ,
+        fontWeight: FontWeight.w500);
+
+  }
 }
