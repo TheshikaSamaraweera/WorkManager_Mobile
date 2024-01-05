@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'add_assignment.dart';
+import 'add_lab.dart';
 
-class AssignmentListPage extends StatefulWidget {
+class LabListPage extends StatefulWidget {
   @override
-  _AssignmentListPageState createState() => _AssignmentListPageState();
+  _LabListPageState createState() => _LabListPageState();
 }
 
-class _AssignmentListPageState extends State<AssignmentListPage> {
+class _LabListPageState extends State<LabListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Assignment List'),
+        title: Text('Lab List'),
         backgroundColor: Colors.blue,
         actions: [
           IconButton(
@@ -20,38 +20,35 @@ class _AssignmentListPageState extends State<AssignmentListPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddAssignmentPage()),
+                MaterialPageRoute(builder: (context) => AddLabPage()),
               );
             },
           ),
         ],
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream:
-            FirebaseFirestore.instance.collection('assignments').snapshots(),
-        builder: (context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+        stream: FirebaseFirestore.instance.collection('labs').snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (!snapshot.hasData || snapshot.data == null) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
 
-          var assignments = snapshot.data!.docs;
+          var labs = snapshot.data!.docs;
 
           return ListView.builder(
-            itemCount: assignments.length,
+            itemCount: labs.length,
             itemBuilder: (context, index) {
-              var assignment = assignments[index].data();
-              return _buildAssignmentTile(
-                AssignmentType.values[
-                    assignment['assignmentType'] ?? AssignmentType.quiz.index],
-                assignment['conductingDate'] ?? 'No Date',
-                assignment['time'] ?? 'No Time',
-                assignment['moduleName'] ?? 'No Module Name',
-                assignment['moduleCode'] ?? 'No Module Code',
-                assignmentId: assignments[index].id,
-                isCompleted: assignment['completed'] ?? false,
+              var lab = labs[index].data();
+              return _buildLabTile(
+                lab['labNumber'] ?? 'No Lab Number',
+                lab['moduleName'] ?? 'No Module Name',
+                lab['moduleCode'] ?? 'No Module Code',
+                lab['conductingDate'] ?? 'No Date',
+                lab['time'] ?? 'No Time',
+                labId: labs[index].id,
+                isCompleted: lab['completed'] ?? false,
               );
             },
           );
@@ -60,17 +57,20 @@ class _AssignmentListPageState extends State<AssignmentListPage> {
     );
   }
 
-  Widget _buildAssignmentTile(
-    AssignmentType assignmentType,
-    String conductingDate,
-    String time,
+  Widget _buildLabTile(
+    String labNumber,
     String moduleName,
-    String moduleCode, {
-    required String assignmentId,
+    String moduleCode,
+    String conductingDate,
+    String time, {
+    required String labId,
     required bool isCompleted,
   }) {
+    Color cardColor = isCompleted ? Colors.greenAccent : Colors.white;
+    String completionNote = isCompleted ? 'Completed' : ''; // Note to display when completed
+
     return Card(
-      color: isCompleted ? Colors.greenAccent : Colors.white,
+      color: cardColor,
       elevation: 3.0,
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: ListTile(
@@ -83,9 +83,12 @@ class _AssignmentListPageState extends State<AssignmentListPage> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Assignment Type: ${assignmentTypeToString(assignmentType)}'),
-            Text('Date: $conductingDate'),
+            Text('Lab Number: $labNumber'),
+            Text('Module Name: $moduleName'),
+            Text('Module Code: $moduleCode'),
+            Text('Conducting Date: $conductingDate'),
             Text('Time: $time'),
+            Text(completionNote, style: TextStyle(color: Colors.green)),
           ],
         ),
         trailing: isCompleted
@@ -95,14 +98,14 @@ class _AssignmentListPageState extends State<AssignmentListPage> {
                   IconButton(
                     icon: Icon(Icons.undo),
                     onPressed: () {
-                      _markAssignmentNotCompleted(assignmentId);
+                      _markLabNotCompleted(labId);
                       _showUndoMessage();
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {
-                      _deleteAssignment(assignmentId);
+                      _deleteLab(labId);
                     },
                   ),
                 ],
@@ -110,33 +113,30 @@ class _AssignmentListPageState extends State<AssignmentListPage> {
             : IconButton(
                 icon: Icon(Icons.check),
                 onPressed: () {
-                  _markAssignmentCompleted(assignmentId);
-                  _showCongratulatoryMessage();
+                  _markLabCompleted(labId);
+                  _showCompletionMessage();
                 },
               ),
       ),
     );
   }
 
-  void _markAssignmentCompleted(String assignmentId) async {
+  void _markLabCompleted(String labId) async {
     await FirebaseFirestore.instance
-        .collection('assignments')
-        .doc(assignmentId)
+        .collection('labs')
+        .doc(labId)
         .update({'completed': true});
   }
 
-  void _markAssignmentNotCompleted(String assignmentId) async {
+  void _markLabNotCompleted(String labId) async {
     await FirebaseFirestore.instance
-        .collection('assignments')
-        .doc(assignmentId)
+        .collection('labs')
+        .doc(labId)
         .update({'completed': false});
   }
 
-  void _deleteAssignment(String assignmentId) async {
-    await FirebaseFirestore.instance
-        .collection('assignments')
-        .doc(assignmentId)
-        .delete();
+  void _deleteLab(String labId) async {
+    await FirebaseFirestore.instance.collection('labs').doc(labId).delete();
   }
 
   void _showUndoMessage() {
@@ -144,8 +144,8 @@ class _AssignmentListPageState extends State<AssignmentListPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Assignment Marked as Not Completed'),
-          content: Text('You have marked the assignment as not completed.'),
+          title: Text('Lab Marked as Not Completed'),
+          content: Text('You have marked the lab as not completed.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -159,13 +159,13 @@ class _AssignmentListPageState extends State<AssignmentListPage> {
     );
   }
 
-  void _showCongratulatoryMessage() {
+  void _showCompletionMessage() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Congratulations!'),
-          content: Text('You have completed your assignment.'),
+          title: Text('Lab Completed'),
+          content: Text('You have completed the lab.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -177,20 +177,5 @@ class _AssignmentListPageState extends State<AssignmentListPage> {
         );
       },
     );
-  }
-}
-
-enum AssignmentType { quiz, homework, project }
-
-String assignmentTypeToString(AssignmentType assignmentType) {
-  switch (assignmentType) {
-    case AssignmentType.quiz:
-      return 'Quiz';
-    case AssignmentType.homework:
-      return 'Homework';
-    case AssignmentType.project:
-      return 'Project';
-    default:
-      return '';
   }
 }
