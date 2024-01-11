@@ -1,9 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:workapp/lab_list.dart';
-import 'package:workapp/todo_list.dart';
 
-import 'assignment.dart';
+import 'register.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +22,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: Colors.blue[900],
       ),
-      home: LabListPage(),
+      home: Register(),
     );
   }
 }

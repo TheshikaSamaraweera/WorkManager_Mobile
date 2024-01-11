@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:workapp/home_page.dart';
 import 'package:workapp/widget/widget_support.dart';
 import 'Student.dart';
 import 'Teacher.dart';
@@ -437,7 +438,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Student(),
+              builder: (context) => HomePage(),
             ),
           );
         }
