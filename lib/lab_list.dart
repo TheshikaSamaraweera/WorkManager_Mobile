@@ -28,7 +28,8 @@ class _LabListPageState extends State<LabListPage> {
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance.collection('labs').snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (!snapshot.hasData || snapshot.data == null) {
             return Center(
               child: CircularProgressIndicator(),
@@ -67,7 +68,8 @@ class _LabListPageState extends State<LabListPage> {
     required bool isCompleted,
   }) {
     Color cardColor = isCompleted ? Colors.greenAccent : Colors.white;
-    String completionNote = isCompleted ? 'Completed' : ''; // Note to display when completed
+    String completionNote =
+        isCompleted ? 'Completed' : ''; // Note to display when completed
 
     return Card(
       color: cardColor,

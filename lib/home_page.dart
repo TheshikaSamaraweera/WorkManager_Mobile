@@ -9,6 +9,7 @@ import 'package:workapp/todo_list.dart';
 import 'package:workapp/widget/bottom_bar.dart';
 import '../data/data.dart';
 import '../size_config.dart';
+import 'package:workapp/lab_list.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -295,7 +296,7 @@ class UpcomingAppointments extends StatelessWidget {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                        builder: (context) => TodoListPage(),
+                        builder: (context) => LabListPage(),
                     ),);
                     // Add functionality for the Laboratory button
                   },
