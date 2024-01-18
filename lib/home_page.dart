@@ -14,6 +14,7 @@ import 'package:workapp/todo_list.dart';
 import 'package:workapp/widget/bottom_bar.dart';
 import '../data/data.dart';
 import '../size_config.dart';
+import 'package:workapp/lab_list.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -445,11 +446,18 @@ class UpcomingAppointments extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pushReplacement(
+<<<<<<< HEAD
                       context,
                       MaterialPageRoute(
                         builder: (context) => TodoListPage(),
                       ),
                     );
+=======
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => LabListPage(),
+                    ),);
+>>>>>>> f134189ce57513e066c019828f6a8ef6db4e612c
                     // Add functionality for the Laboratory button
                   },
                   style: ElevatedButton.styleFrom(
