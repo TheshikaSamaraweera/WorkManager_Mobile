@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:workapp/home_page.dart';
+import 'package:workapp/student.dart';
+import 'package:workapp/teacher.dart';
 import 'package:workapp/widget/bottom_bar.dart';
 
 import 'home.dart';
