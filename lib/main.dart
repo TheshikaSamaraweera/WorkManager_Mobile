@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: Colors.blue[900],
       ),
-      home: TimetablePage(),
+      home:Register()
     );
   }
 }
