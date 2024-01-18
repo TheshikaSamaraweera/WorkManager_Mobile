@@ -1,98 +1,62 @@
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:workapp/style/app_style.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
-import '../home_page.dart';
 
-class BottomBar extends StatefulWidget {
-  const BottomBar({Key? key}) : super(key: key);
+
+class Navbar extends StatefulWidget {
+  const Navbar({super.key});
 
   @override
-  State<BottomBar> createState() => _BottomBarState();
+  State<Navbar> createState() => BottmBar();
 }
 
-class _BottomBarState extends State<BottomBar> {
-  int _selectedIndex = 0;
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    //BusinessPage(),
-    //SchoolPage(),
-    //SchoolPage(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+class BottmBar extends State<Navbar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+
+      bottomNavigationBar: Container(
+        color: Color.fromARGB(255, 255, 255, 255),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+          child: GNav(
+            backgroundColor: Color.fromARGB(255, 255, 255, 255),
+            color: Colors.black,
+            activeColor: const Color.fromARGB(255, 156, 29, 29),
+            tabBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+            gap: 8,
+            padding: EdgeInsets.all(12),
+            tabs: const [
+              GButton(
+                icon: Icons.home,
+                text: "Home",
+              ),
+              GButton(
+                icon: Icons.search,
+                text: "Search",
+              ),
+              GButton(
+                icon: Icons.settings,
+                text: "Settings",
+              ),
+              GButton(
+                icon: Icons.list,
+                text: "To-Do",
+              ),
+            ],
+          ),
+        ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            activeIcon: SvgPicture.asset(
-              AppStyle.homeIcon,
-              colorFilter: const ColorFilter.mode(
-                AppStyle.primarySwatch,
-                BlendMode.srcIn,
-              ),
-            ),
-            icon: SvgPicture.asset(AppStyle.homeIcon),
-            label: 'Home',
-          ),
-
-
-          BottomNavigationBarItem(
-            activeIcon: SvgPicture.asset(
-              AppStyle.eventIcon,
-              colorFilter: const ColorFilter.mode(
-                AppStyle.primarySwatch,
-                BlendMode.srcIn,
-              ),
-            ),
-            icon: SvgPicture.asset(AppStyle.eventIcon),
-            label: 'To-Do',
-          ),
-
-
-          BottomNavigationBarItem(
-            activeIcon: SvgPicture.asset(
-              AppStyle.reportIcon,
-              colorFilter: const ColorFilter.mode(
-                AppStyle.primarySwatch,
-                BlendMode.srcIn,
-              ),
-            ),
-            icon: SvgPicture.asset(AppStyle.reportIcon),
-            label: 'Attendance',
-          ),
-
-
-          BottomNavigationBarItem(
-            activeIcon: SvgPicture.asset(
-              AppStyle.notificationsIcon,
-              colorFilter: const ColorFilter.mode(
-                AppStyle.primarySwatch,
-                BlendMode.srcIn,
-              ),
-            ),
-            icon: SvgPicture.asset(AppStyle.notificationsIcon),
-            label: 'Notifications',
-          ),
-
-
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 12, 46, 71),
-        onTap: _onItemTapped,
-      ),
+    
     );
   }
+
+
 }
+
+
+
+
+
+
